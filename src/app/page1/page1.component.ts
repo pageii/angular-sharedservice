@@ -15,10 +15,16 @@ export class Page1Component implements OnInit {
 
   ngOnInit() {
 
-    this.interService.setStorage("Shared Service Works: Static Method"); // Static method to storage data
-    
-    this.my_observable = this.interService.setfilteredPosts("Shared Service Works: Subscription Method");
+    //This component emits the source value
 
+    this.interService.setStorage("Shared Service Works: Static Method"); // Static method to storage data
+
+    this.my_observable = this.interService.setStorage_Observable("Shared Service Works: Subscription Method");
+
+  }
+
+  ngOnDestroy() {
+    this.my_observable.unsubscribe();  // Unsubscribe cleanup to release resources.
   }
 
 }

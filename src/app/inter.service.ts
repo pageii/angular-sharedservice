@@ -18,35 +18,34 @@ export class InterService {
   storage: any;
   response: any;
   
-//   subject = new Subject<any>();
   subject = new BehaviorSubject<any>(null);
 //   subject = new ReplaySubject<any>(null);
  
-  // private subject = new ReplaySubject<Array<Object>>(null);
-//   private subject = new AsyncSubject();
-
-// missionAnnounced$ = this.subject.asObservable();
-
   constructor() {
   }
 
 
-   setStorage(input) : void {
+  // ******* Static Method *******
+  // Set
+  setStorage(input) : void {
         this.storage = input;
     }
 
-   getStorage() {
+  // Get
+  getStorage() {
         return this.storage;        
     }
 
 
-
-   setfilteredPosts(filtered: any) : void {
+  // ******* Observable Method *******
+  // Set
+  setStorage_Observable(filtered: any) : void {
       this.subject.next(filtered);    
       // this.subject.complete(); // For AsyncSubject. Remove if using BehaviourSubject or replaySubject
     }
 
-   getfilteredPosts() : Observable<any> {
+  // Get
+  getStorage_Observable() : Observable<any> {
         return this.subject;
     }
 

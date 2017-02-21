@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable }     from 'rxjs/Observable';
 import { InterService } from './../inter.service';
-import { Subscription }   from 'rxjs/Subscription';
-import { 
-  Pipe,
-  PipeTransform,
- } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
+import { OnDestroy } from "@angular/core";
 
 @Component({
   selector: 'app-page2',
@@ -13,8 +10,9 @@ import {
   styleUrls: ['./page2.component.css'],
 })
 
-export class Page2Component implements OnInit {
-  my_observable: any;
+export class Page2Component implements OnInit, OnDestroy {
+  my_observable_static: any;
+  my_observable_observable: any;
   response: any;
   
   constructor(private interService: InterService) {
@@ -22,23 +20,20 @@ export class Page2Component implements OnInit {
 
   ngOnInit() {
 
-      this.interService.getfilteredPosts().subscribe({
-        next: (response) => {
-            this.response = response;
-            console.log(this.response);
-            return this.response;
-        }
-      });
+    //This component recieves the source value via inter-service (aka shared service)
 
-    console.log(this.interService.getStorage());  //unsubscribed
+    this.my_observable_static = this.interService.getStorage();
+    
+    this.interService.getStorage_Observable().subscribe({
+      next: (my_observable_observable) => {
+          this.my_observable_observable = my_observable_observable;
+      }
+    });
+
   }
 
-  // ngOnDestroy() {
-  //   this.interService.getfilteredPosts().unsubscribe();
-  // }
+  ngOnDestroy() {
+    this.my_observable_observable.unsubscribe();  // Unsubscribe cleanup to release resources.
+  }
 
 }
-
-
-
-
